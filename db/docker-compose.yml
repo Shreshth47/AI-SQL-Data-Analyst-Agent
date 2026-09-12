@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: northwind
+    ports:
+      - "5433:5432"
+    volumes:
+      # This pulls a standard Northwind schema/data script and our custom init script
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
