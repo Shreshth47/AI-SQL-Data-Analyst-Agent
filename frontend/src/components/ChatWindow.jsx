@@ -3,6 +3,11 @@ import { Send, Database, Terminal, ChevronDown } from 'lucide-react';
 import ResultTable from './ResultTable';
 import ChartView from './ChartView';
 import { askQuestion } from '../api';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 
 export default function ChatWindow() {
   const [messages, setMessages] = useState([
@@ -76,7 +81,14 @@ export default function ChatWindow() {
               </div>
             ) : (
               <div className="w-full bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-sm text-slate-200 space-y-3">
-                <div className="whitespace-pre-wrap leading-relaxed">{m.answer}</div>
+                <div className="prose prose-invert prose-sm max-w-none text-slate-200">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm, remarkMath]}
+                    rehypePlugins={[rehypeKatex]}
+                  >
+                    {m.answer}
+                  </ReactMarkdown>
+                </div>
 
                 {/* Collapsible SQL Query view */}
                 {m.sql && (
